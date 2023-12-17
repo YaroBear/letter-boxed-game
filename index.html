@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Letter Boxed</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      canvas {
+        display: block;
+      }
+    </style>
+    <script src="./scripts/graph.js"></script>
+    <script src="./scripts/point.js"></script>
+    <script src="./scripts/segment.js"></script>
+    <script src="./scripts/game.js"></script>
+  </head>
+  <body>
+    <canvas id="myCanvas"></canvas>
+    <p id="current-letter-chain"></p>
+    <button onclick="game.undoAddSegment()">Undo</button>
+    <button onclick="game.validateCurrentLetterChain()">Validate</button>
+    <script>
+      const canvas = document.getElementById("myCanvas");
+      const ctx = canvas.getContext("2d");
+
+      const width = (canvas.width = window.innerWidth);
+      const height = (canvas.height = window.innerHeight);
+
+      let game = new Game(ctx);
+
+      function draw() {
+        ctx.fillStyle = "rgb(191, 250, 164)";
+        ctx.fillRect(0, 0, width, height);
+
+        game.draw();
+        game.debug();
+
+        window.requestAnimationFrame(draw);
+      }
+
+      window.requestAnimationFrame(draw);
+    </script>
+  </body>
+</html>
