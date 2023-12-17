@@ -19,8 +19,10 @@
   <body>
     <canvas id="myCanvas"></canvas>
     <p id="current-letter-chain"></p>
-    <button onclick="game.undoAddSegment()">Undo</button>
+    <button onclick="game.undoLastMove()">Undo</button>
     <button onclick="game.validateCurrentLetterChain()">Validate</button>
+    Completed letter chains:
+    <ol id="completed-letter-chains"></ol>
     <script>
       const canvas = document.getElementById("myCanvas");
       const ctx = canvas.getContext("2d");

@@ -54,6 +54,13 @@ class Game {
     );
   }
 
+  undoLastMove() {
+    this.undoAddSegment();
+    this.undoSelectLetter();
+    this.updateCurrentLetterChainText();
+    this.updateCompletedLetterChainsList();
+  }
+
   undoAddSegment() {
     const segment = this.gameGraph.segments.pop();
     if (segment) {
@@ -61,8 +68,19 @@ class Game {
     } else {
       this.currentSelectedPoint = null;
     }
+  }
+
+  undoSelectLetter() {
     this.currentLetterChain.pop();
-    this.updateCurrentLetterChainText();
+    if (this.currentLetterChain.length === 0) {
+      const lastLetterChain = this.completedLetterChains.pop();
+      if (lastLetterChain) {
+        this.currentLetterChain = lastLetterChain.slice(
+          0,
+          lastLetterChain.length - 1
+        );
+      }
+    }
   }
 
   updateCurrentLetterChainText() {
@@ -72,14 +90,33 @@ class Game {
     currentLetterChainText.innerHTML = this.currentLetterChain.join("");
   }
 
+  updateCompletedLetterChainsList() {
+    const completedLetterChainsList = document.getElementById(
+      "completed-letter-chains"
+    );
+    completedLetterChainsList.innerHTML = "";
+    for (const letterChain of this.completedLetterChains) {
+      const listItem = document.createElement("li");
+      listItem.innerHTML = letterChain.join("");
+      completedLetterChainsList.appendChild(listItem);
+    }
+  }
+
   validateCurrentLetterChain() {
     const currentWord = this.currentLetterChain.join("");
-    const wordList = ["ABC", "DEF", "GHI", "JKL"];
+    const wordList = ["BEG"];
     if (wordList.includes(currentWord)) {
-      this.completedLetterChains.push(this.currentLetterChain);
-      this.currentLetterChain = [];
+      this.startNewLetterChainUsingLastSelectedLetter();
       this.updateCurrentLetterChainText();
+      this.updateCompletedLetterChainsList();
     }
+  }
+
+  startNewLetterChainUsingLastSelectedLetter() {
+    this.completedLetterChains.push(this.currentLetterChain);
+    this.currentLetterChain = [
+      this.currentLetterChain[this.currentLetterChain.length - 1],
+    ];
   }
 
   listenToClick() {
@@ -97,7 +134,6 @@ class Game {
           this.gameGraph.labels[this.gameGraph.points.indexOf(pointClicked)]
             .letter
         );
-        console.log(this.currentLetterChain);
       }
       this.updateCurrentLetterChainText();
     });
