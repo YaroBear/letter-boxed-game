@@ -6,6 +6,10 @@
       body {
         margin: 0;
         padding: 0;
+
+        div {
+          margin-bottom: 1em;
+        }
       }
       canvas {
         display: block;
@@ -18,17 +22,21 @@
   </head>
   <body>
     <canvas id="myCanvas"></canvas>
-    <p id="current-letter-chain"></p>
-    <button onclick="game.undoLastMove()">Undo</button>
-    <button onclick="game.validateCurrentLetterChain()">Validate</button>
-    Completed letter chains:
-    <ol id="completed-letter-chains"></ol>
+    <div>Current Letter Chain: <span id="current-letter-chain"></span></div>
+    <div>
+      <button onclick="game.undoLastMove()">Undo</button>
+      <button onclick="game.validateCurrentLetterChain()">Validate</button>
+    </div>
+    <div>
+      Completed letter chains:
+      <ol id="completed-letter-chains"></ol>
+    </div>
     <script>
       const canvas = document.getElementById("myCanvas");
       const ctx = canvas.getContext("2d");
 
-      const width = (canvas.width = window.innerWidth);
-      const height = (canvas.height = window.innerHeight);
+      const width = (canvas.width = 425);
+      const height = (canvas.height = 500);
 
       let game = new Game(ctx);
 
