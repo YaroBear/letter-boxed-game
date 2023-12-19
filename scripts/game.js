@@ -1,6 +1,8 @@
 class Game {
-  constructor(ctx) {
+  constructor(ctx, dictionary, letters) {
     this.ctx = ctx;
+    this.dictionary = dictionary;
+    this.letters = letters.map((letter) => letter.toUpperCase());
     this.createGameGraph();
     this.createBoundingBoxGraph();
     this.listenToMouse();
@@ -103,9 +105,8 @@ class Game {
   }
 
   validateCurrentLetterChain() {
-    const currentWord = this.currentLetterChain.join("");
-    const wordList = ["BEG"];
-    if (wordList.includes(currentWord)) {
+    const currentWord = this.currentLetterChain.join("").toLowerCase();
+    if (this.dictionary.isValidWord(currentWord)) {
       this.startNewLetterChainUsingLastSelectedLetter();
       this.updateCurrentLetterChainText();
       this.updateCompletedLetterChainsList();
@@ -169,33 +170,33 @@ class Game {
     const p1 = new Point(100, 100);
     const p2 = new Point(200, 100);
     const p3 = new Point(300, 100);
-    const letter1 = new Letter(100, 100, "A", "top");
-    const letter2 = new Letter(200, 100, "B", "top");
-    const letter3 = new Letter(300, 100, "C", "top");
+    const letter1 = new Letter(100, 100, this.letters[0], "top");
+    const letter2 = new Letter(200, 100, this.letters[1], "top");
+    const letter3 = new Letter(300, 100, this.letters[2], "top");
 
     // bottom edge
     const p4 = new Point(100, 400);
     const p5 = new Point(200, 400);
     const p6 = new Point(300, 400);
-    const letter4 = new Letter(100, 400, "D", "bottom");
-    const letter5 = new Letter(200, 400, "E", "bottom");
-    const letter6 = new Letter(300, 400, "F", "bottom");
+    const letter4 = new Letter(100, 400, this.letters[3], "bottom");
+    const letter5 = new Letter(200, 400, this.letters[4], "bottom");
+    const letter6 = new Letter(300, 400, this.letters[5], "bottom");
 
     // left edge
     const p7 = new Point(50, 150);
     const p8 = new Point(50, 250);
     const p9 = new Point(50, 350);
-    const letter7 = new Letter(50, 150, "G", "left");
-    const letter8 = new Letter(50, 250, "H", "left");
-    const letter9 = new Letter(50, 350, "I", "left");
+    const letter7 = new Letter(50, 150, this.letters[6], "left");
+    const letter8 = new Letter(50, 250, this.letters[7], "left");
+    const letter9 = new Letter(50, 350, this.letters[8], "left");
 
     // right edge
     const p10 = new Point(350, 150);
     const p11 = new Point(350, 250);
     const p12 = new Point(350, 350);
-    const letter10 = new Letter(350, 150, "J", "right");
-    const letter11 = new Letter(350, 250, "K", "right");
-    const letter12 = new Letter(350, 350, "L", "right");
+    const letter10 = new Letter(350, 150, this.letters[9], "right");
+    const letter11 = new Letter(350, 250, this.letters[10], "right");
+    const letter12 = new Letter(350, 350, this.letters[11], "right");
 
     this.gameGraph = new Graph(
       this.ctx,

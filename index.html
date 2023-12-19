@@ -19,6 +19,9 @@
     <script src="./scripts/point.js"></script>
     <script src="./scripts/segment.js"></script>
     <script src="./scripts/game.js"></script>
+    <script src="./scripts/letterChainGenerator.js"></script>
+    <script src="./scripts/dictionary.js"></script>
+    <script src="./scripts/solver.js"></script>
   </head>
   <body>
     <canvas id="myCanvas"></canvas>
@@ -38,7 +41,9 @@
       const width = (canvas.width = 425);
       const height = (canvas.height = 500);
 
-      let game = new Game(ctx);
+      let dict = new Dictionary();
+
+      let game;
 
       function draw() {
         ctx.fillStyle = "rgb(191, 250, 164)";
@@ -50,7 +55,15 @@
         window.requestAnimationFrame(draw);
       }
 
-      window.requestAnimationFrame(draw);
+      dict.load().then(() => {
+        console.log("Dictionary loaded");
+        const gen = new LetterChainGenerator();
+        const chain = gen.generateLetterChain();
+        const solver = new Solver(dict, gen);
+        solver.solve(chain);
+        game = new Game(ctx, dict, chain);
+        window.requestAnimationFrame(draw);
+      });
     </script>
   </body>
 </html>
